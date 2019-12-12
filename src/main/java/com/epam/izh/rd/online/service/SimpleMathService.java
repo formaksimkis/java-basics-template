@@ -1,5 +1,9 @@
 package com.epam.izh.rd.online.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class SimpleMathService implements MathService {
 
     /**
@@ -13,7 +17,18 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int compare(int value1, int value2) {
-        return -2;
+        return(Integer.compare(value1, value2));
+        /**
+         *  if(value1 < value2) {
+         *      return -1;
+         *  } else if(value1 > value2) {
+         *      return 1;
+         *  } else {return 0;}
+         *
+         * Можно было сделать и так, но в одном из уроков призывали
+         * пользоваться стандартными готовыми решениями
+         *
+         */
     }
 
     /**
@@ -22,7 +37,8 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int maxFrom(int value1, int value2) {
-        return -1;
+        return Integer.max(value1, value2);
+        // или так: return (value1 > value2) ? value1 : value2;
     }
 
     /**
@@ -31,7 +47,11 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int maxFrom(int[] values) {
-        return -1;
+        int maximum = 0;
+        for (int i:values) {
+            maximum = Math.max(i, maximum);
+        }
+        return maximum;
     }
 
     /**
@@ -40,7 +60,11 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int sum(int[] values) {
-        return -1;
+        int sum = 0;
+        for (int i:values) {
+            sum += i;
+        }
+        return sum;
     }
 
     /**
@@ -49,7 +73,19 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int[] getEvenDigits(int[] values) {
-        return new int[]{};
+        List<Integer> listEvenDigits = new ArrayList<Integer>();
+        for (int i:values) {
+            if (i % 2 == 0) {
+                listEvenDigits.add(i);
+            } else {
+                continue;
+            }
+        }
+        int[] arrayEvenDigits = new int[listEvenDigits.size()];
+        for(int j = 0; j < listEvenDigits.size(); j++)  {
+            arrayEvenDigits[j] = listEvenDigits.get(j);
+        }
+        return arrayEvenDigits;
     }
 
     /**
@@ -59,7 +95,12 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public long calcFactorial(int initialVal) {
-        return -1L;
+        long fact = 1;
+
+        for (int i = 1; i <= initialVal; i++) {
+            fact *= i;
+        }
+        return fact;
     }
 
     /**
@@ -74,7 +115,19 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public long calcFibonacci(int number) {
-        return -1L;
+        long prev = 0;
+        long next = 1;
+        long fib = 0;
+        for (int i = 2; i <= number; i++) {
+            fib = prev + next;
+            prev = next;
+            next = fib;
+        }
+        if (number >= 2) {
+            return fib;
+        } else if (number == 1) {
+            return 1L;
+        } else return 0L;
     }
 
     /**
@@ -83,7 +136,21 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int[] sort(int[] values) {
-        return new int[]{};
+        Arrays.sort(values);
+        return values;
+
+        /**
+         * Также возможен вариант без применения специализированных классов, например пузьком:
+         *         for (int i = values.length - 1; i > 0; i--) {
+         *             for (int j = 0; j < i; j++) {
+         *                 if (values[j] > values[j+1]) {
+         *                     int temp = values[j];
+         *                     values[j] = values[j+1];
+         *                     values[j+1] = temp;
+         *                 }
+         *             }
+         *         }
+         */
     }
 
     /**
@@ -94,7 +161,20 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public boolean isPrimary(int number) {
-        return false;
+        if (((number % 2 != 0) || (number == 2)) && ((number % 3 != 0) || (number == 3)) && ((number % 5 != 0) || (number == 5)) && ((number % 7 != 0) || (number == 7)) && (number != 1)) {
+            return true;
+        } else {
+            return false;
+        }
+        /**
+         * Есть ещё способ, реализованный в BigInteger:
+         * Метод BigInteger.probablePrime(...)
+         * генерирует случайное число и использует Тест Миллера для определения простое оно или нет,
+         * в результате у числа вероятность быть составным не превышает 2^-100
+         *
+         * BigInteger bigInteger = BigInteger.valueOf(number);
+         * return bigInteger.isProbablePrime((int) Math.log(number));
+         */
     }
 
     /**
@@ -104,6 +184,11 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int[] reverseArray(int[] values) {
-        return new int[]{};
+        for (int i = 0, j = values.length - 1; i < j; i++, j--) {
+            int temp = values[i];
+            values[i] = values[j];
+            values[j] = temp;
+        }
+        return values;
     }
 }
