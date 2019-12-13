@@ -47,7 +47,7 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int maxFrom(int[] values) {
-        int maximum = 0;
+        int maximum = Integer.MIN_VALUE;
         for (int i:values) {
             maximum = Math.max(i, maximum);
         }
@@ -161,11 +161,16 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public boolean isPrimary(int number) {
-        if (((number % 2 != 0) || (number == 2)) && ((number % 3 != 0) || (number == 3)) && ((number % 5 != 0) || (number == 5)) && ((number % 7 != 0) || (number == 7)) && (number != 1)) {
-            return true;
-        } else {
+        if (number < 2) {
             return false;
         }
+        double divider = Math.sqrt(number);
+        for (int i = 2; i <= divider; i++){
+            if (number % i == 0) {
+                return  false;
+            }
+        }
+        return true;
         /**
          * Есть ещё способ, реализованный в BigInteger:
          * Метод BigInteger.probablePrime(...)
